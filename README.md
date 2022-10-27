@@ -2,8 +2,8 @@
 
 ## Automate Download and Installation of HashiCorp binaries
 
-<!-- [![release](https://img.shields.io/github/release/robertpeteuil/hashicorp-installer?colorB=2067b8)](https://github.com/robertpeteuil/hashicorp-installer) -->
-[![release](https://img.shields.io/badge/release-1.0.0--beta.2-2067b8)](https://github.com/robertpeteuil/hashicorp-installer)
+<!-- [![release](https://img.shields.io/badge/release-1.0.0--beta.2-2067b8)](https://github.com/robertpeteuil/hashicorp-installer) -->
+[![release](https://img.shields.io/github/release/robertpeteuil/hashicorp-installer?colorB=2067b8)](https://github.com/robertpeteuil/hashicorp-installer)
 [![bash](https://img.shields.io/badge/language-bash-89e051.svg?style=flat-square)](https://github.com/robertpeteuil/hashicorp-installer)
 [![license](https://img.shields.io/github/license/robertpeteuil/hashicorp-installer?colorB=2067b8)](https://github.com/robertpeteuil/hashicorp-installer)
 
