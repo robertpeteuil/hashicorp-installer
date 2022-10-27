@@ -9,7 +9,7 @@
 
 ---
 
-**hashi-install.sh** automates the process of downloading and installing HashiCorp products.  It supports all binaries on releases.hashicorp.com; including terraform, packer, vault, consul, boundary, waypoint, etc..
+**hcinstall.sh** automates the process of downloading and installing HashiCorp products.  It supports all binaries on releases.hashicorp.com; including terraform, packer, vault, consul, boundary, waypoint, etc..
 
 This script detects host architecture, searches for releases, downloads, verifies and installs binaries.  Optional parameters allow finding latest patch releases, retrieving enterprise binaries, and functioning in special modes.
 
@@ -18,7 +18,7 @@ This is an upgrade and replacement for the earlier projects: [Terraform Installe
 ## Usage
 
 ```text
-hashi-install.sh [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-d]
+hcinstall.sh [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-d]
 
      -p PRODUCT : product (default='terraform')
      -i VERSION : version to install, supported formats '1.1.9' or '1.1' (default=latest)
@@ -42,20 +42,20 @@ hashi-install.sh [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-
 > specify product with `-p` flag
 
 - defaults to Terraform if `-p` not specified
-  - `hashi-install.sh`
+  - `hcinstall.sh`
 - install vault using product abbreviation
-  - `hashi-install.sh -p v`
+  - `hcinstall.sh -p v`
 - install consul-template using name
-  - `hashi-install.sh -p consul-template`
+  - `hcinstall.sh -p consul-template`
 
 > specify version with `-i` flag
 
 - install latest - don't specify version
-  - `hashi-install.sh`
+  - `hcinstall.sh`
 - install specific version - use MAJOR.MINOR.PATCH format
-  - `hashi-install.sh -i 1.1.5`
+  - `hcinstall.sh -i 1.1.5`
 - determine & install latest patch release - use MAJOR.MINOR format
-  - `hashi-install.sh -i 1.1`
+  - `hcinstall.sh -i 1.1`
 
 ### Override CPU detection on Apple Silicon (arm64)
 
@@ -65,7 +65,7 @@ hashi-install.sh [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-
 - If `arm64` binaries aren't available for a given product + version, it reverts to `amd64` (Intel)
 - To override detected CPU and force Intel binaries, use the `-m`
   - ex: when using terraform with an older version of a provider that isn't available for arm64
-  - install the intel version of terraform with: `hashi-installer.sh -m`
+  - install the intel version of terraform with: `hcinstaller.sh -m`
 
 ## Migration from Previous Installers
 
@@ -82,8 +82,8 @@ hashi-install.sh [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-
 Download Installer
 
 ``` shell
-curl -LO https://raw.github.com/robertpeteuil/hashicorp-installer/master/hashi-install.sh
-chmod +x hashi-install.sh
+curl -LO https://raw.github.com/robertpeteuil/hashicorp-installer/master/hcinstall.sh
+chmod +x hcinstall.sh
 ```
 
 ## System Requirements

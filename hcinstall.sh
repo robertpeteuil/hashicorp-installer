@@ -15,7 +15,7 @@ set -e
 defaultProduct="terraform"
 
 scriptname=$(basename "$0")
-scriptbuildnum="1.0.0-beta.1"
+scriptbuildnum="1.0.0-beta.3"
 scriptbuilddate="2022-10-26"
 
 # CHECK DEPENDANCIES AND SET NET RETRIEVAL TOOL
