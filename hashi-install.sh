@@ -203,8 +203,8 @@ elif [[ -z "$VERSION" ]]; then
   [[ "$OUTPUTONLY" ]] && echo "info: latest ${PRODUCT} release is ${VERSION}"
 fi
 
-# # exit if output only
-# [[ "$OUTPUTONLY" ]] && exit 0
+# exit if output only
+[[ "$OUTPUTONLY" ]] && exit 0
 
 # DETERMINE OS AND PROCESSOR
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -266,13 +266,6 @@ fi
 
 # VERIFY LINKS
 verifyLinks
-
-
-
-# exit if output only
-[[ "$OUTPUTONLY" ]] && displayValues && exit 0
-
-
 
 #### EXECUTION
 
