@@ -53,9 +53,9 @@ usage() {
   echo -e "     -c\t\t: leave binary in current working directory"
   echo -e "     -d\t\t: debug output"
   echo
-  echo -e "     PRODUCT may specify abbreviations or names"
-  echo -e "       abbreviations:\tb=boundary, c=consul, n=nomad, p=packer, t=terraform, v=vault, w=waypoint"
-  echo -e "       names:\t\thttps://releases.hashicorp.com"
+  echo -e "     PRODUCT may specify product name or abbreviation"
+  echo -e "       product names : https://releases.hashicorp.com"
+  echo -e "       abbreviations : b=boundary, c=consul, n=nomad, p=packer, t=terraform, v=vault, w=waypoint"
 }
 
 mostRecent() {

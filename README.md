@@ -33,9 +33,9 @@ hcinstall.sh [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-d]
      -c         : leave binary in current working directory
      -d         : debug output
 
-     PRODUCT may specify abbreviations or full names
-       abbreviations: b=boundary, c=consul, n=nomad, p=packer, t=terraform, v=vault, w=waypoint
-       full names: https://releases.hashicorp.com
+     PRODUCT may specify product name or abbreviation
+       product names : https://releases.hashicorp.com
+       abbreviations : b=boundary, c=consul, n=nomad, p=packer, t=terraform, v=vault, w=waypoint
 ```
 
 ## Download
