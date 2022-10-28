@@ -14,9 +14,9 @@ set -e
 # sudoInstall=true
 defaultProduct="terraform"
 
-scriptname=$(basename "$0")
-scriptbuildnum="1.0.0-beta.3"
-scriptbuilddate="2022-10-26"
+scriptname="hcinstall"
+scriptbuildnum="1.0.0-beta.4"
+scriptbuilddate="2022-10-27"
 
 # CHECK DEPENDANCIES AND SET NET RETRIEVAL TOOL
 if ! unzip -h 2&> /dev/null; then
