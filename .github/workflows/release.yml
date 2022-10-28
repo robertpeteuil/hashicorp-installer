@@ -1,13 +1,13 @@
-name: Upload Release
+name: Release
+run-name: push v${{ github.event.release.tag_name }} to web
 
 on:
   release:
     types: [released]
   workflow_dispatch:
 
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  copy-file:
+  upload-script:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
@@ -26,5 +26,5 @@ jobs:
         destination_folder: 'docs'
         user_email: 'actions@github.com'
         user_name: 'release-action'
-        commit_message: 'add latest release'
+        commit_message: 'update to v${{ github.event.release.tag_name }} from ${{ github.repository }}'
   
