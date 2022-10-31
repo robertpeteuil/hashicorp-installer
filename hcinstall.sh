@@ -15,8 +15,8 @@ set -e
 defaultProduct="terraform"
 
 scriptname="hcinstall"
-scriptbuildnum="1.0.0-beta.4"
-scriptbuilddate="2022-10-27"
+scriptbuildnum="1.0.0-beta.6"
+scriptbuilddate="2022-10-30"
 
 # CHECK DEPENDANCIES AND SET NET RETRIEVAL TOOL
 if ! unzip -h 2&> /dev/null; then
@@ -61,10 +61,10 @@ usage() {
 mostRecent() {
   case "${nettool}" in
     curl)
-      LATEST=$(curl -sS https://api.releases.hashicorp.com/v1/releases/${1}/latest 2>/dev/null | grep -o '"version":"[^"]*' | grep -o '[^"]*$')
+      LATEST=$(curl -sS "https://api.releases.hashicorp.com/v1/releases/${1}/latest" 2>/dev/null | grep -o '"version":"[^"]*' | grep -o '[^"]*$')
       ;;
     wget)
-      LATEST=$(wget -q -O- https://api.releases.hashicorp.com/v1/releases/${1}/latest 2>/dev/null | grep -o '"version":"[^"]*' | grep -o '[^"]*$')
+      LATEST=$(wget -q -O- "https://api.releases.hashicorp.com/v1/releases/${1}/latest" 2>/dev/null | grep -o '"version":"[^"]*' | grep -o '[^"]*$')
       ;;
   esac
   echo -n "$LATEST"
@@ -78,10 +78,10 @@ latestRelease() {
     INCVER="${VERSION}.${i}"
     case "${nettool}" in
       curl)
-        VERCHECK=$(curl -o /dev/null --silent --write-out '%{http_code}\n' https://api.releases.hashicorp.com/v1/releases/${PRODUCT}/${INCVER})
+        VERCHECK=$(curl -o /dev/null --silent --write-out '%{http_code}\n' "https://api.releases.hashicorp.com/v1/releases/${PRODUCT}/${INCVER}")
         ;;
       wget)
-        VERCHECK=$(wget -O /dev/null -S https://api.releases.hashicorp.com/v1/releases/${PRODUCT}/${INCVER} 2>&1 | grep "HTTP/" | awk '{print $2}')
+        VERCHECK=$(wget -O /dev/null -S "https://api.releases.hashicorp.com/v1/releases/${PRODUCT}/${INCVER}" 2>&1 | grep "HTTP/" | awk '{print $2}')
         ;;
     esac
     if [[ $VERCHECK == 200 ]]; then
@@ -183,10 +183,10 @@ else
 fi
 
 # Capitalize Product Name (for display)
-DPRODUCT="$(tr '[:lower:]' '[:upper:]' <<< ${PRODUCT:0:1})${PRODUCT:1}"
+DPRODUCT="$(tr '[:lower:]' '[:upper:]' <<< "${PRODUCT:0:1}")${PRODUCT:1}"
 
 # DETERMINE VERSION
-if [ $(echo $VERSION | tr -d -c '.' | wc -c) == 1 ]; then  # partial version
+if [ "$(echo "$VERSION" | tr -d -c '.' | wc -c)" == 1 ]; then  # partial version
   [[ "$DEBUG" ]] && echo "debug: partial version specified finding latest of $PRODUCT $VERSION"
   POINTRELEASE=$(latestRelease)
   # VERSIONTEXT="Latest release for ${PRODUCT}-${VERSION} is ${POINTRELEASE}"
@@ -211,10 +211,12 @@ OS=$(uname -s | tr '[:upper:]' '[:lower:]')
 if [[ "$OS" == "linux" ]]; then
   PROC=$(lscpu 2> /dev/null | awk '/Architecture/ {if($2 == "x86_64") {print "amd64"; exit} else if($2 ~ /arm/) {print "arm"; exit} else if($2 ~ /aarch64/) {print "arm64"; exit} else {print "386"; exit}}')
   if [[ -z $PROC ]]; then
-    PROC=$(cat /proc/cpuinfo | awk '/model\ name/ {if($0 ~ /ARM/) {print "arm"; exit}}')
+    # PROC=$(cat /proc/cpuinfo | awk '/model\ name/ {if($0 ~ /ARM/) {print "arm"; exit}}')
+    PROC=$(awk '/model\ name/ {if($0 ~ /ARM/) {print "arm"; exit}}' /proc/cpuinfo)
   fi
   if [[ -z $PROC ]]; then
-    PROC=$(cat /proc/cpuinfo | awk '/flags/ {if($0 ~ /lm/) {print "amd64"; exit} else {print "386"; exit}}')
+    # PROC=$(cat /proc/cpuinfo | awk '/flags/ {if($0 ~ /lm/) {print "amd64"; exit} else {print "386"; exit}}')
+    PROC=$(awk '/flags/ {if($0 ~ /lm/) {print "amd64"; exit} else {print "386"; exit}}' /proc/cpuinfo)
   fi
 elif [[ "$OS" == "darwin" && "$M1OVERIDE" ]]; then
   [[ "$DEBUG" ]] && echo "debug: Mac Intel binary forced"
@@ -330,9 +332,10 @@ esac
 
 # VERIFY ZIP CHECKSUM
 if shasum -h 2&> /dev/null; then
-  expected_sha=$(cat SHAFILE | grep "$FILENAME" | awk '{print $1}')
+  # expected_sha=$(cat SHAFILE | grep "$FILENAME" | awk '{print $1}')
+  expected_sha=$(grep "$FILENAME" | awk '{print $1}' SHAFILE)
   download_sha=$(shasum -a 256 "$FILENAME" | cut -d' ' -f1)
-  if [ $expected_sha != $download_sha ]; then
+  if [ "$expected_sha" != "$download_sha" ]; then
     echo "error: download checksum incorrect"
     echo " expected: $expected_sha"
     echo " actual: $download_sha"
