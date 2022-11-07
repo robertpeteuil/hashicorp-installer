@@ -8,18 +8,18 @@
 
 ---
 
-**hcinstall.sh** automates the process of downloading and installing HashiCorp products.  It supports all binaries on [releases.hashicorp.com](https://releases.hashicorp.com); including [terraform](https://www.terraform.io/), [packer](https://www.packer.io/), [vault](https://www.vaultproject.io/), [consul](https://www.consul.io/), [boundary](https://www.boundaryproject.io/), [waypoint](https://www.waypointproject.io/), etc..
+**hcinstall** automates the process of downloading and installing HashiCorp products.  It supports all binaries on [releases.hashicorp.com](https://releases.hashicorp.com); including [terraform](https://www.terraform.io/), [packer](https://www.packer.io/), [vault](https://www.vaultproject.io/), [consul](https://www.consul.io/), [boundary](https://www.boundaryproject.io/), [waypoint](https://www.waypointproject.io/), etc..
 
 This script detects host architecture, searches for releases, downloads, verifies and installs binaries.  Optional parameters allow finding latest patch releases, retrieving enterprise binaries, and functioning in special modes.
 
-It can also be used to display the latest patch release for a given version without installation (using output only mode).  For example, find the latest release in the Terraform 1.1 series: `hcinstall.sh -i 1.1 -o`.
+It can also be used to display the latest patch release for a given version without installation (using output only mode).  For example, find the latest release in the Terraform 1.1 series: `hcinstall -i 1.1 -o`.
 
 This is an upgrade and replacement for the earlier projects: [Terraform Installer](https://github.com/robertpeteuil/terraform-installer) and [Packer Installer](https://github.com/robertpeteuil/packer-installer).  It has been designed for easy migration and allows drop-in-replacement with minimal adjustments.
 
 ## Use
 
 ```text
-hcinstall.sh [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-d]
+hcinstall [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-d]
 
      -p PRODUCT : product (default='terraform')
      -i VERSION : version to install, supported formats '1.1.9' or '1.1' (default=latest)
@@ -43,15 +43,17 @@ hcinstall.sh [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-d]
 Download latest release [^1] from my bootstrap server (iac.sh or https://iac.sh)
 
 ``` shell
-curl iac.sh/hcinstall > hcinstall.sh
-chmod +x hcinstall.sh
+curl iac.sh/hcinstall > hcinstall
+chmod +x hcinstall
+# optional - move to system binary directory
+sudo mv /hcinstall /usr/local/bin
 ```
 
 Download from GitHub
 
 ``` shell
-curl -LO https://raw.github.com/robertpeteuil/hashicorp-installer/master/hcinstall.sh
-chmod +x hcinstall.sh
+curl -LO https://raw.github.com/robertpeteuil/hashicorp-installer/master/hcinstall
+chmod +x hcinstall
 ```
 
 [^1]: Releases automatically published to iac.sh via GitHub Actions
@@ -61,29 +63,29 @@ chmod +x hcinstall.sh
 ### Specifying Products `-p`
 
 - `-p` not specified, defaults to Terraform
-  - `hcinstall.sh`
+  - `hcinstall`
 - specify product abbreviation (v = vault)
-  - `hcinstall.sh -p v`
+  - `hcinstall -p v`
 - specify full binary name
-  - `hcinstall.sh -p consul-template`
+  - `hcinstall -p consul-template`
 
 ### Specifying Specific or Partial Versions `-i`
 
 - latest - don't specify `-i`
-  - `hcinstall.sh`
+  - `hcinstall`
 - specific version - use MAJOR.MINOR.PATCH format
-  - `hcinstall.sh -i 1.1.5`
+  - `hcinstall -i 1.1.5`
 - latest patch release - use MAJOR.MINOR format
-  - `hcinstall.sh -i 1.1`
+  - `hcinstall -i 1.1`
 
 ### Output Only Mode `-o`
 
 > find latest version or patch release, display info and exit without install
 
 - display latest version of Terraform
-  - `hcinstall.sh -o`
+  - `hcinstall -o`
 - display latest patch release for Vault 1.9
-  - `hcinstall.sh -p v -i 1.9 -o`
+  - `hcinstall -p v -i 1.9 -o`
 
 ## Override arm64 binaries on macOS `-m`
 
