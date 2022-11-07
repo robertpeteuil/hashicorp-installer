@@ -15,8 +15,8 @@ set -e
 defaultProduct="terraform"
 
 scriptname="hcinstall"
-scriptbuildnum="1.0.0-beta.6"
-scriptbuilddate="2022-10-30"
+scriptbuildnum="1.0.0-beta.7-1"
+scriptbuilddate="2022-11-07"
 
 # CHECK DEPENDANCIES AND SET NET RETRIEVAL TOOL
 if ! unzip -h 2&> /dev/null; then
@@ -92,6 +92,25 @@ latestRelease() {
     i=$((i+1))
   done
   echo -n "$LATESTREL"
+}
+
+testVersion() {
+  # call bool_result=$(testVersion "full verison number")
+  TESTVER=$1
+  case "${nettool}" in
+    curl)
+      VERCHECK=$(curl -o /dev/null --silent --write-out '%{http_code}\n' "https://api.releases.hashicorp.com/v1/releases/${PRODUCT}/${TESTVER}")
+      ;;
+    wget)
+      VERCHECK=$(wget -O /dev/null -S "https://api.releases.hashicorp.com/v1/releases/${PRODUCT}/${TESTVER}" 2>&1 | grep "HTTP/" | awk '{print $2}')
+      ;;
+  esac
+  if [[ $VERCHECK == 200 ]]; then
+    VERVALID=true
+  else
+    VERVALID=false
+  fi
+  echo -n "$VERVALID"
 }
 
 createLinks() {
@@ -181,30 +200,48 @@ else
     *) PRODUCT="${PROD}" ;;
   esac
 fi
-
 # Capitalize Product Name (for display)
 DPRODUCT="$(tr '[:lower:]' '[:upper:]' <<< "${PRODUCT:0:1}")${PRODUCT:1}"
 
 # DETERMINE VERSION
+#   partial version specified, find latest patch release
 if [ "$(echo "$VERSION" | tr -d -c '.' | wc -c)" == 1 ]; then  # partial version
   [[ "$DEBUG" ]] && echo "debug: partial version specified finding latest of $PRODUCT $VERSION"
+  # verify POINTRELEASE a valid release for PRODUCT
+  bool_result=$(testVersion "${VERSION}.0")
+  if [[ "$bool_result" == false ]]; then
+    echo "error: ${PRODUCT} does not have a ${VERSION} release"
+    exit 1
+  fi
   POINTRELEASE=$(latestRelease)
-  # VERSIONTEXT="Latest release for ${PRODUCT}-${VERSION} is ${POINTRELEASE}"
   [[ "$DEBUG" || "$OUTPUTONLY" ]] && echo "Latest release for ${PRODUCT}-${VERSION} is ${POINTRELEASE}"
   VERSION="$POINTRELEASE"
-# else find most recent
+# find most recent
 elif [[ -z "$VERSION" ]]; then
   [[ "$DEBUG" ]] && echo "Find most recent"
   VERSION=$(mostRecent "${PRODUCT}")
   if [[ -z "$VERSION" ]]; then
-    echo "error: product \"${PRODUCT}\" not found in HashiCorp releases"
+    echo "error: ${PRODUCT} release ${VERSION} not found in HashiCorp releases"
     exit 1
   fi
   [[ "$OUTPUTONLY" ]] && echo "info: latest ${PRODUCT} release is ${VERSION}"
+else
+# full version specified - verify VERSION a valid release for PRODUCT
+  bool_result=$(testVersion "${VERSION}")
+  if [[ "$bool_result" == false ]]; then
+    echo "error: ${PRODUCT} does not have a ${VERSION} release"
+    exit 1
+  fi
+  [[ "$DEBUG" || "$OUTPUTONLY" ]] && echo "Specified ${PRODUCT} version ${VERSION} valid"
+
 fi
 
-# exit if output only
+
+#### OUTPUT ONLY MODE - EXIT
 [[ "$OUTPUTONLY" ]] && exit 0
+
+
+#### DOWNLOAD / INSTALL MODE - DETERMINE PLATFORM/ARCHITECTURE, CALCULATE DOWNLOAD URL
 
 # DETERMINE OS AND PROCESSOR
 OS=$(uname -s | tr '[:upper:]' '[:lower:]')
@@ -247,10 +284,10 @@ if [[ "$ENTDL" ]]; then
   fi
 fi
 
-# CREATE FILENAME AND LINKS
+# CALCULATE FILENAME AND LINKS
 createLinks
 
-# CHECK AND ADJUST FOR ARM64 INVALID LINKS
+# CHECK LINKS AND ADJUST FOR ARM64 INVALID LINKS
 if [[ "$SHALINKVALID" == 200 && "$LINKVALID" != 200 ]]; then
   # enterprise build for product version, but not for the detected platform + cpu
   if [[ "$OS" == "darwin" && "$PROC" == "arm64" ]]; then
@@ -269,7 +306,8 @@ fi
 # VERIFY LINKS
 verifyLinks
 
-#### EXECUTION
+
+#### DOWNLOAD / INSTALL EXECUTION
 
 # DEFAULT TO TERRAFORM (backward compatability with terraform-installer)
 if [[ "$PRODUCT" == "terraform" ]] && [[ -n "$TF_INSTALL_DIR" ]]; then
