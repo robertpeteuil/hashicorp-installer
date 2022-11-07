@@ -15,7 +15,7 @@ set -e
 defaultProduct="terraform"
 
 scriptname="hcinstall"
-scriptbuildnum="1.0.0-beta.7-1"
+scriptbuildnum="1.0.0-beta.6-1"
 scriptbuilddate="2022-11-07"
 
 # CHECK DEPENDANCIES AND SET NET RETRIEVAL TOOL
