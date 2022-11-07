@@ -10,9 +10,9 @@
 
 **hcinstall** automates the process of downloading and installing HashiCorp products.  It supports all binaries on [releases.hashicorp.com](https://releases.hashicorp.com); including [terraform](https://www.terraform.io/), [packer](https://www.packer.io/), [vault](https://www.vaultproject.io/), [consul](https://www.consul.io/), [boundary](https://www.boundaryproject.io/), [waypoint](https://www.waypointproject.io/), etc..
 
-This script detects host architecture, searches for releases, downloads, verifies and installs binaries.  Optional parameters allow finding latest patch releases, retrieving enterprise binaries, and functioning in special modes.
+This script searches releases, determines correct binary for the system, downloads binary and installs it to the selected location.  It allows install of the most recent version of any product with only one parameter. There are many optional parameters which allow it to be used to query/validate version numbers, retrieve enterprise binaries, and specifying custom location for the downloaded binary.
 
-It can also be used to display the latest patch release for a given version without installation (using output only mode).  For example, find the latest release in the Terraform 1.1 series: `hcinstall -i 1.1 -o`.
+Example, display the latest patch release for terraform 1.1: `hcinstall -i 1.1 -o`.
 
 This is an upgrade and replacement for the earlier projects: [Terraform Installer](https://github.com/robertpeteuil/terraform-installer) and [Packer Installer](https://github.com/robertpeteuil/packer-installer).  It has been designed for easy migration and allows drop-in-replacement with minimal adjustments.
 
@@ -22,9 +22,10 @@ This is an upgrade and replacement for the earlier projects: [Terraform Installe
 hcinstall [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-d]
 
      -p PRODUCT : product (default='terraform')
-     -i VERSION : version to install, supported formats '1.1.9' or '1.1' (default=latest)
-     -e         : download enterprise binary when PRODUCT = vault, consul or nomad
-     -o         : output only (don't download & install)
+     -i VERSION : version (default=latest)
+                  specify either product version (ex: '1.1') or specific release (ex: '1.1.9')
+     -e         : download enterprise binary for PRODUCT = vault, consul or nomad
+     -o         : only output release info (don't download, install)
      -h         : help
      -v         : display script version
 

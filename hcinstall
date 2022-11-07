@@ -42,9 +42,10 @@ usage() {
   echo -e "usage: ${scriptname} [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-d]"
   echo
   echo -e "     -p PRODUCT\t: product (default='terraform')"
-  echo -e "     -i VERSION\t: version to install, supported formats '1.1.9' or '1.1' (default=latest)"
-  echo -e "     -e\t\t: download enterprise binary when PRODUCT = vault, consul or nomad"
-  echo -e "     -o\t\t: output only (don't download & install)"
+  echo -e "     -i VERSION\t: version (default=latest)"
+  echo -e "\t\t  specify either product version (ex: '1.1') or specific release (ex: '1.1.9')"
+  echo -e "     -e\t\t: download enterprise binary for PRODUCT = vault, consul or nomad"
+  echo -e "     -o\t\t: only output release info (don't download, install)"
   echo -e "     -h\t\t: help"
   echo -e "     -v\t\t: display script version"
   echo
