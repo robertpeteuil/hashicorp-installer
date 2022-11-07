@@ -164,7 +164,7 @@ isIn() {
   [[ "$2" =~ (^|[[:space:]])"$1"($|[[:space:]]) ]] && echo 1 || echo 0
 }
 
-while getopts ":i:acdehmop:v" arg; do
+while getopts ":i:acdehmop:vV" arg; do
   case "${arg}" in
     a)  sudoInstall=true;;
     c)  cwdInstall=true;;
@@ -175,7 +175,7 @@ while getopts ":i:acdehmop:v" arg; do
     m)  M1OVERIDE=true;;
     o)  OUTPUTONLY=true;;
     p)  PROD=${OPTARG};;
-    v)  displayVer; exit;;
+    v|V)  displayVer; exit;;
     \?) echo -e "error: invalid option: $OPTARG\n"; usage; exit;;
     :)  echo -e "error: -$OPTARG requires an argument\n"; usage; exit 1;;
   esac
