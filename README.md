@@ -12,7 +12,7 @@
 
 This script searches releases, determines correct binary for the system, downloads binary and installs it to the selected location.  It allows install of the most recent version of any product with only one parameter. There are many optional parameters which allow it to be used to query/validate version numbers, retrieve enterprise binaries, and specifying custom location for the downloaded binary.
 
-Example, display the latest patch release for terraform 1.1: `hcinstall -i 1.1 -o`.
+Example, display the latest patch release for terraform 1.1: `hcinstall -i 1.1 -o`
 
 This is an upgrade and replacement for the earlier projects: [Terraform Installer](https://github.com/robertpeteuil/terraform-installer) and [Packer Installer](https://github.com/robertpeteuil/packer-installer).  It has been designed for easy migration and allows drop-in-replacement with minimal adjustments.
 
@@ -41,13 +41,13 @@ hcinstall [-p PRODUCT] [-i VERSION] [-e] [-o] [-h] [-v] [-m] [-a] [-c] [-d]
 
 ## Download
 
-Download latest release [^1] from my bootstrap server (iac.sh or https://iac.sh)
+Download latest release from my bootstrap server (iac.sh or https://iac.sh)
 
 ``` shell
 curl iac.sh/hcinstall > hcinstall
 chmod +x hcinstall
 # optional - move to system binary directory
-sudo mv /hcinstall /usr/local/bin
+sudo mv hcinstall /usr/local/bin
 ```
 
 Download from GitHub
@@ -56,8 +56,6 @@ Download from GitHub
 curl -LO https://raw.github.com/robertpeteuil/hashicorp-installer/master/hcinstall
 chmod +x hcinstall
 ```
-
-[^1]: Releases automatically published to iac.sh via GitHub Actions
 
 ## Parameters
 
@@ -120,4 +118,4 @@ I am a HashiCorp employee, but this is a personal project and not officially end
 
 ## License
 
-Apache 2.0 License - Copyright (c) 2022    Robert Peteuil
+Apache 2.0 License - Copyright (c) 2022  Robert Peteuil
